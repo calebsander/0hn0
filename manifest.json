@@ -1,0 +1,25 @@
+{
+	"manifest_version": 2,
+	"name": "0hn0 Solver",
+	"version": "1.0",
+	"icons": {
+		"48": "blue.png",
+		"128": "red.png"
+	},
+	"background": {
+		"scripts": ["background.js"],
+		"persistent": false
+	},
+	"page_action": {
+		"default_icon": {
+			"19": "green.png",
+			"38": "yellow.png"
+		},
+		"default_popup": "index.html",
+		"default_title": "Solve an 0hn0 puzzle!"
+	},
+	"permissions": [
+		"activeTab",
+		"declarativeContent"
+	]
+}
