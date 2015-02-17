@@ -110,18 +110,6 @@ if (rows) {
 			}
 			return count;
 		},
-		getCappedDirections: function(addressIn) {
-			var address = addressIn.clone();
-			var original = address.clone();
-			var result = [];
-			for (var direction in directions) {
-				address.increment(directions[direction]);
-				while (this.getAt(address).equals(BLUE_TILE)) address.increment(directions[direction]);
-				result[direction] = this.getAt(address).equals(RED_TILE);
-				address = original.clone();
-			}
-			return result;
-		},
 		possibleCount: function(addressIn, direction) {
 			var address = addressIn.clone();
 			var count = 0;
@@ -131,11 +119,6 @@ if (rows) {
 				address.increment(direction);
 			}
 			return count;
-		},
-		possibleCountAll: function(address) {
-			var totalCount = 0;
-			for (var direction in directions) totalCount += this.possibleCount(address, directions[direction]);
-			return totalCount;
 		},
 		additionalConnection: function(addressIn, direction) {
 			var address = addressIn.clone();
@@ -149,24 +132,6 @@ if (rows) {
 				address.increment(direction);
 			}
 			return count;
-		},
-		capFull: function() {
-			var address, original, number, direction;
-			for (var i = 0, j; i < this.size(); i++) {
-				for (j = 0; j < this.size(); j++) {
-					address = new Address(i, j);
-					number = this.getAt(address).getNumber();
-					if (number && number == this.count(address)) {
-						original = address.clone();
-						for (direction in directions) {
-							address = original.clone();
-							address.increment(directions[direction]);
-							while (this.getAt(address).equals(BLUE_TILE)) address.increment(directions[direction]);
-							if (this.getAt(address).equals(EMPTY_TILE)) this.setAt(address, RED_TILE);
-						}
-					}
-				}
-			}
 		},
 		fillRed: function() {
 			var address, newAddress, allRed, direction;
@@ -271,11 +236,11 @@ if (rows) {
 	}
 
 	var board = new Board(tiles);
-	var oldboard = new Board([[new Tile(true)]]);
-	while (!board.equals(oldboard)) {
+	var oldboard;
+	do {
 		oldboard = board.clone();
 		board.solve();
-	}
+	} while (!board.equals(oldboard));
 
 	function mousedown(element) {
 		var event = document.createEvent('HTMLEvents');
